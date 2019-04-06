@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const knex = require('knex');
 const bcrypt = require('bcryptjs');
+const socketIO = require('socket.io');
+const http = require('http');
 
 const app = express();
 
