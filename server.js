@@ -32,6 +32,7 @@ app.post('/signin', (req,res) => {
       return db.select('*').from('users')
         .where('email','=',email)
         .then(user => {
+          console.log(user[0]);
           res.json(user[0]);
         })
         .catch( err => res.status(400).json('Unable to get user'))
@@ -40,12 +41,13 @@ app.post('/signin', (req,res) => {
     }
   })
   .catch(err => res.status(400).json('Wrong credentials'))
-}
 })
 
 app.post('/register', (req,res) => {
   const { email, name, password } = req.body;
-  if(!email || !password || !name){
+  console.log( email, name, password);
+  if(!email || !password || !name)
+  {
     return res.status(400).json('Incorrect form submission');
   }
   const hash = bcrypt.hashSync(password);
@@ -61,8 +63,7 @@ app.post('/register', (req,res) => {
       .returning('*')
       .insert({
         email: loginEmail[0],
-        name: name,
-        joined: new Date()
+        name: name
     })
     .then(user => {
       res.json(user[0]);
