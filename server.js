@@ -32,7 +32,6 @@ app.post('/signin', (req,res) => {
       return db.select('*').from('users')
         .where('email','=',email)
         .then(user => {
-          console.log(user[0]);
           res.json(user[0]);
         })
         .catch( err => res.status(400).json('Unable to get user'))
@@ -45,7 +44,6 @@ app.post('/signin', (req,res) => {
 
 app.post('/register', (req,res) => {
   const { email, name, password } = req.body;
-  console.log( email, name, password);
   if(!email || !password || !name)
   {
     return res.status(400).json('Incorrect form submission');
@@ -74,5 +72,38 @@ app.post('/register', (req,res) => {
   })
     .catch(err => res.status(400).json('Unable to register'));
 })
+
+app.post('/makequizsports', (req,res) => {
+  const {quest, copt, wopt1, wopt2, wopt3} = req.body;
+  db('sports').insert({
+    question: quest,
+    correctoption: copt,
+    wrongoption1: wopt1,
+    wrongoption2: wopt2,
+    wrongoption3: wopt3
+  })
+  .returning('*')
+  .then(data => {
+    console.log(data[0]);
+    res.json(data[0]);
+  });
+})
+
+app.post('/makequizmusic', (req,res) => {
+  const {quest, copt, wopt1, wopt2, wopt3} = req.body;
+  db('music').insert({
+    question: quest,
+    correctoption: copt,
+    wrongoption1: wopt1,
+    wrongoption2: wopt2,
+    wrongoption3: wopt3
+  })
+  .returning('*')
+  .then(data => {
+    console.log(data[0]);
+    res.json(data[0]);
+  });
+})
+
 
 app.listen(3000);
