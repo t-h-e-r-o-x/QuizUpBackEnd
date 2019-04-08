@@ -8,6 +8,9 @@ const http = require('http');
 
 const app = express();
 
+const server = http.createServer(app);
+const io = socketIO(server);
+
 const db = knex({
   client: 'pg',
   connection: {
@@ -107,5 +110,8 @@ app.post('/makequizmusic', (req,res) => {
   });
 })
 
+io.on('connection', socket => {
+  console.log('User Connected');
+})
 
-app.listen(3000);
+server.listen(3000);
